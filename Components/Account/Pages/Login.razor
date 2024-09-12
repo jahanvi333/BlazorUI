@@ -24,15 +24,15 @@
                 <FluentValidationMessage For="() => Input.Email" class="text-danger" />
                 <FluentTextField type="password" Name="Input.Password" @bind-Value="Input.Password" AutoComplete="current-password" Required="true" Placeholder="password" Label="Password" Style="width: 100%" />
                 <FluentValidationMessage For="() => Input.Password" class="text-danger" />
-                     <FluentAnchor Appearance="Appearance.Hypertext"
+                     <FluentAnchor Class="forget-link" Appearance="Appearance.Hypertext"
                       Href="Account/ForgotPassword">
-            Forgot your password?
-        </FluentAnchor>
+                        Forgot your password?
+                     </FluentAnchor>
        
                 <FluentCheckbox Name="Input.RememberMe" @bind-Value="Input.RememberMe" Label="Remember me" />
 
                 <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Style="width: 100%">Log in</FluentButton>
-                  <FluentGrid  OnBreakpointEnter="@OnBreakpointEnterHandler" AdaptiveRendering="true" Justify="@Justification" Style="padding: 4px;">
+                    <FluentGrid OnBreakpointEnter="@OnBreakpointEnterHandler" Spacing="@Spacing" AdaptiveRendering="true" Justify="@Justification" Style="padding: 4px;">
 
             <!-- First Grid Item -->
             <FluentGridItem xs="12" sm="6" HiddenWhen="GridItemHidden.SmAndDown">
@@ -49,8 +49,8 @@
             <FluentGridItem xs="12" sm="6">
                 <div class="card" style="margin-top: 20px;">
                     <p>
-                        <FluentAnchor Appearance="Appearance.Hypertext"
-                                      Href="Account//ResendEmailConfirmation">
+                        <FluentAnchor Class="email-link" Appearance="Appearance.Hypertext"
+                                      Href="Account/ResendEmailConfirmation">
                             Resend email confirmation
                         </FluentAnchor>
                     </p>
@@ -75,12 +75,12 @@
 </div>
 
 <style>
-    .center-container {
-        display: flex;
-        justify-content: center; /* Centers horizontally */
-        align-items: center; /* Centers vertically */
-        height: 100vh; /* Full viewport height to vertically center */
-        margin: 0; /* Remove default margin */
+    .forget-link {
+        align-self:end
+    }
+
+    .email-link{
+
     }
 </style>
 
@@ -134,6 +134,7 @@
     [SupplyParameterFromQuery]
     private string? ReturnUrl { get; set; }
     JustifyContent Justification = JustifyContent.FlexStart;
+    int Spacing = 10;
     protected override async Task OnInitializedAsync()
     {
         if (HttpMethods.IsGet(HttpContext.Request.Method))

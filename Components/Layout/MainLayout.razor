@@ -26,9 +26,11 @@
         <!-- Main Content Area -->
         <div style="flex: @GetMainContentSpan(); display: flex; justify-content: flex-start; align-items: center; padding-left: 710px; margin-top: 200px;">
             <FluentCard Style="width: 25vw; padding: 0px;">
+             
                 <CascadingAuthenticationState>
                     @Body
                 </CascadingAuthenticationState>
+               
             </FluentCard>
         </div>
 
@@ -69,6 +71,7 @@
     {
         currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
         NavigationManager.LocationChanged += OnLocationChanged;
+
         // Await the task and assign the result to the userName variable
 
     }
