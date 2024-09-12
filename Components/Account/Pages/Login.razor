@@ -12,7 +12,7 @@
 
 
 <div class="center">
-    <FluentCard >
+    <FluentCard  >
      
     <FluentGridItem xs="8" sm="4">
         <StatusMessage Message="@errorMessage" />
@@ -32,7 +32,7 @@
                 <FluentCheckbox Name="Input.RememberMe" @bind-Value="Input.RememberMe" Label="Remember me" />
 
                 <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Style="width: 100%">Log in</FluentButton>
-                    <FluentGrid OnBreakpointEnter="@OnBreakpointEnterHandler" Spacing="@Spacing" AdaptiveRendering="true" Justify="@Justification" Style="padding: 4px;">
+                  <FluentGrid  OnBreakpointEnter="@OnBreakpointEnterHandler" AdaptiveRendering="true" Justify="@Justification" Style="padding: 4px;">
 
             <!-- First Grid Item -->
             <FluentGridItem xs="12" sm="6" HiddenWhen="GridItemHidden.SmAndDown">
@@ -79,9 +79,7 @@
         align-self:end
     }
 
-    .email-link{
-
-    }
+    .email-link
 </style>
 
 @* <FluentGrid>
@@ -134,7 +132,6 @@
     [SupplyParameterFromQuery]
     private string? ReturnUrl { get; set; }
     JustifyContent Justification = JustifyContent.FlexStart;
-    int Spacing = 10;
     protected override async Task OnInitializedAsync()
     {
         if (HttpMethods.IsGet(HttpContext.Request.Method))

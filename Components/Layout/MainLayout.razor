@@ -11,12 +11,12 @@
 
 <div class="page">
     <!-- Main Container using Flexbox -->
-    <div style="display: flex; height: 100vh;align-items:flex-start">
+    <div style="display: flex;align-items:center;justify-content:center; height: 100vh;">
 
         <!-- Navigation Menu (Conditional Rendering) -->
         @if (ShouldDisplayNavMenu())
         {
-            <div style="flex: 1; border: none; overflow: auto;">
+            <div>
                 <FluentCard Style="height: 100%; border: none;">
                     <NavMenu />
                 </FluentCard>
@@ -24,7 +24,7 @@
         }
 
         <!-- Main Content Area -->
-        <div style="flex: @GetMainContentSpan(); display: flex; justify-content: flex-start; align-items: center; padding-left: 710px; margin-top: 200px;">
+        <div style="flex: @GetMainContentSpan(); display: flex; justify-content:center; align-items: center">
             <FluentCard Style="width: 25vw; padding: 0px;">
              
                 <CascadingAuthenticationState>
