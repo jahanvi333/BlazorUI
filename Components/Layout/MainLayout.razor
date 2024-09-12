@@ -1,6 +1,41 @@
 ﻿@inherits LayoutComponentBase
+@inject NavigationManager NavigationManager
 
-<FluentLayout>
+<head>
+    <style>
+        body {
+            background-color: #FAFAFA;
+        }
+    </style>
+</head>
+
+<div class="page">
+    <!-- Main Container using Flexbox -->
+    <div style="display: flex; height: 100vh;align-items:flex-start">
+
+        <!-- Navigation Menu (Conditional Rendering) -->
+        @if (ShouldDisplayNavMenu())
+        {
+            <div style="flex: 1; border: none; overflow: auto;">
+                <FluentCard Style="height: 100%; border: none;">
+                    <NavMenu />
+                </FluentCard>
+            </div>
+        }
+
+        <!-- Main Content Area -->
+        <div style="flex: @GetMainContentSpan(); display: flex; justify-content: flex-start; align-items: center; padding-left: 710px; margin-top: 200px;">
+            <FluentCard Style="width: 25vw; padding: 0px;">
+                <CascadingAuthenticationState>
+                    @Body
+                </CascadingAuthenticationState>
+            </FluentCard>
+        </div>
+
+    </div>
+
+</div>
+@* <FluentLayout>
     <FluentHeader>
         FLuentUI
     </FluentHeader>
@@ -23,4 +58,41 @@
     An unhandled error has occurred.
     <a href="" class="reload">Reload</a>
     <a class="dismiss">🗙</a>
-</div>
+</div> *@
+@code {
+    private string? userName;
+    private string initials = "NA";
+    private string name;
+    private string? currentUrl;
+    private bool isUserAuthenticated;
+    protected override async Task OnInitializedAsync()
+    {
+        currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
+        NavigationManager.LocationChanged += OnLocationChanged;
+        // Await the task and assign the result to the userName variable
+
+    }
+    private bool ShouldDisplayNavMenu()
+    {
+        var uri = new Uri(NavigationManager.Uri);
+        var path = uri.LocalPath;
+
+        var pathsToHide = new List<string> { "/", "/Signup", "/forgotpassword", "/resetpassword", "/email-verification" };
+
+        return !pathsToHide.Contains(path);
+    }
+    private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
+    {
+        currentUrl = NavigationManager.ToBaseRelativePath(e.Location);
+        StateHasChanged();
+    }
+
+    public void Dispose()
+    {
+        NavigationManager.LocationChanged -= OnLocationChanged;
+    }
+    private int GetMainContentSpan()
+    {
+        return ShouldDisplayNavMenu() ? 10 : 12; // Adjust the span to ensure the grid is balanced
+    }
+}
