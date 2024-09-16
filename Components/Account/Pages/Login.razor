@@ -12,7 +12,7 @@
 
 
 <div class="center">
-    <FluentCard  >
+    <FluentCard Style="25vw" >
      
     <FluentGridItem xs="8" sm="4">
         <StatusMessage Message="@errorMessage" />
@@ -47,7 +47,7 @@
 
             <!-- Second Grid Item -->
             <FluentGridItem xs="12" sm="6">
-                <div class="card" style="margin-top: 20px;">
+                            <div class="card dynamic-spacing">
                     <p>
                         <FluentAnchor Class="email-link" Appearance="Appearance.Hypertext"
                                       Href="Account/ResendEmailConfirmation">
@@ -56,6 +56,7 @@
                     </p>
                 </div>
             </FluentGridItem>
+
         </FluentGrid>
                 @* <div>
                     <p>
@@ -79,7 +80,13 @@
         align-self:end
     }
 
-    .email-link
+   .dynamic-spacing {
+    padding-left: calc(7.5vw); /* Dynamically sets padding based on viewport width */
+    margin-top: 20px; /* Static margin-top */
+}
+
+
+    
 </style>
 
 @* <FluentGrid>

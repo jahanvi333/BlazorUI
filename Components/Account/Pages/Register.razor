@@ -15,17 +15,16 @@
 @inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
 
-<PageTitle>Register</PageTitle>
 
-<h1>Register</h1>
-
+<div class="center">
+    <FluentCard Style="25vw" >
 <FluentGrid>
-    <FluentGridItem xs="8" sm="4">
+    <FluentGridItem xs="12" sm="8" md="12">
         <StatusMessage Message="@Message" />
-        <EditForm Model="Input" asp-route-returnUrl="@ReturnUrl" method="post" OnValidSubmit="RegisterUser" FormName="register">
+        <EditForm Model="Input" asp-route-returnUrl="@ReturnUrl" method="post" OnValidSubmit="RegisterUser" FormName="register" style="color:cornflowerblue;font-weight:700;padding:10px;height:18vw">
             <DataAnnotationsValidator />
-            <h2>Create a new account.</h2>
-            <hr />
+            <h2>Register</h2>
+      
             <FluentValidationSummary class="text-danger" role="alert" />
             <FluentStack Orientation="Orientation.Vertical">
                 <FluentTextField Name="Input.Email" @bind-Value="Input.Email" AutoComplete="email" Required="true" Placeholder="name@example.com" Label="Email" Style="width: 100%" />
@@ -38,13 +37,10 @@
             </FluentStack>
         </EditForm>
     </FluentGridItem>
-    <FluentGridItem xs="12" sm="8">
-        <h3>Use another service to log in.</h3>
-        <hr />
-        <ExternalLoginPicker />
-    </FluentGridItem>
+  
 </FluentGrid>
-
+</FluentCard>
+</div>
 @code {
     private IEnumerable<IdentityError>? identityErrors;
 

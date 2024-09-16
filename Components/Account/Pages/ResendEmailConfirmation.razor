@@ -11,25 +11,29 @@
 @inject IEmailSender<ApplicationUser> EmailSender
 @inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
+<div class="center">
+   <FluentCard  >
 
-<PageTitle>Resend email confirmation</PageTitle>
+        <h3 style="color:cornflowerblue;font-weight:700">Resend email confirmation</h3>
 
-<h1>Resend email confirmation</h1>
-<h2>Enter your email.</h2>
-<hr />
 <StatusMessage Message="@message" />
 <FluentGrid>
     <FluentGridItem xs="8" sm="4">
         <EditForm Model="Input" FormName="resend-email-confirmation" OnValidSubmit="OnValidSubmitAsync" method="post">
             <DataAnnotationsValidator />
             <FluentValidationSummary class="text-danger" role="alert" />
-            <FluentTextField Name="Input.Email" @bind-Value="Input.Email" class="form-control" Required="true" Placeholder="name@example.com" Label="Email" Style="width: 100%;" />
+                    <p>Email</p>
+                    <FluentTextField Name="Input.Email" @bind-Value="Input.Email" AutoComplete="username"
+                                     Required="true" class="form-control"
+                                     Placeholder="name@example.com"></FluentTextField>
+@*            <FluentTextField Name="Input.Email" @bind-Value="Input.Email" class="form-control" Required="true" Placeholder="name@example.com" Label="Email" Style="width: 100%;" /> *@
             <FluentValidationMessage For="() => Input.Email" class="text-danger" />
             <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Style="width: 100%;">Resend</FluentButton>
         </EditForm>
     </FluentGridItem>
 </FluentGrid>
-
+</FluentCard>
+</div>
 @code {
     private string? message;
 

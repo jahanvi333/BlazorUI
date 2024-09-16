@@ -25,7 +25,7 @@
 
         <!-- Main Content Area -->
         <div style="flex: @GetMainContentSpan(); display: flex; justify-content:center; align-items: center">
-            <FluentCard Style="width: 25vw; padding: 0px;">
+            <FluentCard Style="width: 30vw; padding: 0px;">
              
                 <CascadingAuthenticationState>
                     @Body
@@ -80,7 +80,7 @@
         var uri = new Uri(NavigationManager.Uri);
         var path = uri.LocalPath;
 
-        var pathsToHide = new List<string> { "/", "/Signup", "/forgotpassword", "/resetpassword", "/email-verification" };
+        var pathsToHide = new List<string> { "/", "/Account/Register", "/Account/ForgotPassword", "/resetpassword", "/email-verification", "/Account/ResendEmailConfirmation" };
 
         return !pathsToHide.Contains(path);
     }
