@@ -12,28 +12,29 @@
 <div class="page">
     <!-- Main Container using Flexbox -->
     <div style="display: flex;align-items:center;justify-content:center; height: 100vh;">
-
         <!-- Navigation Menu (Conditional Rendering) -->
         @if (ShouldDisplayNavMenu())
         {
-            <div>
+            <div class="row justify-content-center" style="max-width:1200px; min-height:100%;display:contents">
                 <FluentCard Style="height: 100%; border: none;">
                     <NavMenu />
+                    @Body
                 </FluentCard>
             </div>
         }
+        else
+        {
+            <div>
+                <FluentCard Style="width: 30vw; padding: 0px;">
+                    <CascadingAuthenticationState>
+                        @Body
+                    </CascadingAuthenticationState>
+                </FluentCard>
+            </div>
 
+        }
         <!-- Main Content Area -->
-        <div style="flex: @GetMainContentSpan(); display: flex; justify-content:center; align-items: center">
-            <FluentCard Style="width: 30vw; padding: 0px;">
-             
-                <CascadingAuthenticationState>
-                    @Body
-                </CascadingAuthenticationState>
-               
-            </FluentCard>
-        </div>
-
+        
     </div>
 
 </div>
