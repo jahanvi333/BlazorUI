@@ -12,7 +12,7 @@
 @inject NavigationManager NavigationManager
 @inject IdentityRedirectManager RedirectManager
 <div class="center">
-   <FluentCard  >
+    <FluentCard Style="width:20vw;">
 
         <h3 style="color:cornflowerblue;font-weight:700">Resend email confirmation</h3>
 
@@ -24,19 +24,57 @@
             <FluentValidationSummary class="text-danger" role="alert" />
                     <p>Email</p>
                     <FluentTextField Name="Input.Email" @bind-Value="Input.Email" AutoComplete="username"
-                                     Required="true" class="form-control"
+                                     Required="true" class="form-control" Style="width: 17vw"
                                      Placeholder="name@example.com"></FluentTextField>
 @*            <FluentTextField Name="Input.Email" @bind-Value="Input.Email" class="form-control" Required="true" Placeholder="name@example.com" Label="Email" Style="width: 100%;" /> *@
             <FluentValidationMessage For="() => Input.Email" class="text-danger" />
-            <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Style="width: 100%;">Resend</FluentButton>
+                   @*  <div style="display: flex; justify-content: center; width: 100%;">
+                        <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Style="width: 10vw;">
+                            Resend
+                        </FluentButton>
+                        
+                    </div>
+                    <FluentAnchor Class="forget-link" Appearance="Appearance.Hypertext"
+                                  Href="/">
+                        Sign In?
+                    </FluentAnchor> *@
+                    <FluentGrid Spacing="@Spacing" OnBreakpointEnter="@OnBreakpointEnterHandler" AdaptiveRendering="true" Justify="@Justification" Style="padding: 5px; ">
+                        <!-- Set full viewport height -->
+                        <!-- First Grid Item with Resend Button -->
+                        <FluentGridItem xs="12" sm="6" HiddenWhen="GridItemHidden.SmAndDown">
+                            <div style="display: flex; justify-content: center; width: 100%;">
+                                <FluentButton Type="ButtonType.Submit" Appearance="Appearance.Accent" Style="width: 10vw;">
+                                    Resend
+                                </FluentButton>
+                            </div>
+                        </FluentGridItem>
+
+                        <!-- Second Grid Item with Sign In Link at the Bottom -->
+                        <FluentGridItem xs="12" sm="6" Style="display: flex; flex-direction: column;">
+                            <!-- Ensure grid item takes full height -->
+                            <div style="flex-grow: 1;"></div> <!-- Spacer to push the content to the bottom -->
+                            <div style="display: flex; justify-content: flex-end;">
+                                <FluentAnchor Class="forget-link" Appearance="Appearance.Hypertext" Href="/">
+                                    Sign In?
+                                </FluentAnchor>
+                            </div>
+                        </FluentGridItem>
+                    </FluentGrid>
+
         </EditForm>
     </FluentGridItem>
 </FluentGrid>
 </FluentCard>
 </div>
+<style>
+    .forget-link {
+        align-self: end
+    }
+</style>
 @code {
     private string? message;
-
+    JustifyContent Justification = JustifyContent.FlexStart;
+    int Spacing = 5;
     [SupplyParameterFromForm]
     private InputModel Input { get; set; } = new();
 
@@ -59,7 +97,11 @@
 
         message = "Verification email sent. Please check your email.";
     }
+    void OnBreakpointEnterHandler(GridItemSize size)
+    {
 
+
+    }
     private sealed class InputModel
     {
         [Required]

@@ -1,6 +1,6 @@
 ﻿@inherits LayoutComponentBase
 @inject NavigationManager NavigationManager
-
+@inject AuthenticationStateProvider AuthenticationStateProvider
 <head>
     <style>
         body {
@@ -15,17 +15,61 @@
         <!-- Navigation Menu (Conditional Rendering) -->
         @if (ShouldDisplayNavMenu())
         {
-            <div class="row justify-content-center" style="max-width:1200px; min-height:100%;display:contents">
-                <FluentCard Style="height: 100%; border: none;">
+           @*  <div class="justify-content-center" style="max-width:1200px; min-height:100%;display:contents">
+                <FluentCard Style="display:flex;flex-direction:column;height: 100%; border: none;" >
+                    
                     <NavMenu />
+                    <div>
                     @Body
+                    </div>
                 </FluentCard>
-            </div>
+            </div> *@
+            <div class="justify-content-center" style="max-width:1200px; min-height:100%;display:contents">
+
+                <FluentCard>
+                    <FluentHeader Style="display: flex; width: 100%; padding: 10px; box-sizing: border-box;margin:0;">
+                        <h3>FluentUI</h3>
+                        <FluentStack Style="justify-content:end">
+                            <FluentProfileMenu Initials="@initials"
+                                               Style="--fluent-profile-menu-hover: var(--neutral-stroke-focus); padding: 4px;">
+                                <HeaderTemplate>
+                                    <FluentLabel Typo="@Typography.Header" Color="@Color.Accent">Login</FluentLabel>
+                                </HeaderTemplate>
+                                <ChildContent>
+                                    <div style="width: 250px; height: 80px">
+                                        <FluentLabel Typo="@Typography.Header" Style="font-weight:bold">@name</FluentLabel>
+                                        <FluentLabel Style="padding-top:7px">@userName</FluentLabel>
+                                    </div>
+                                </ChildContent>
+                                <FooterTemplate>
+                                    <FluentStack>
+                                        @if (isUserAuthenticated)
+                                        {
+                                            <form action="Account/Logout" method="post">
+                                                <AntiforgeryToken />
+                                                <input type="hidden" name="ReturnUrl" value="@currentUrl" />
+                                                <FluentButton Type="ButtonType.Submit" Style="width: 100%;">Logout</FluentButton>
+                                            </form>
+                                        }
+                                    </FluentStack>
+                                </FooterTemplate>
+                            </FluentProfileMenu>
+                        </FluentStack>
+                    </FluentHeader>
+                    <div style="display:flex">
+                        <NavMenu />
+                        <div style=" padding-top: 20px; display: flex; flex-direction: column;">
+                            @Body
+                        </div>
+                    </div>
+                   
+                </FluentCard>
+                </div>
         }
         else
         {
             <div>
-                <FluentCard Style="width: 30vw; padding: 0px;">
+                <FluentCard Style="padding:0px;">
                     <CascadingAuthenticationState>
                         @Body
                     </CascadingAuthenticationState>
@@ -72,9 +116,39 @@
     {
         currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
         NavigationManager.LocationChanged += OnLocationChanged;
-
+        userName = await GetUserName();
+        isUserAuthenticated = userName != "Guest";
+        SetInitials(userName);
         // Await the task and assign the result to the userName variable
 
+    }
+    private async Task<string> GetUserName()
+    {
+        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+        var user = authState.User;
+
+        // Return the name of the user if authenticated, otherwise "Guest"
+        return user.Identity?.Name ?? "Guest";
+    }
+    private void SetInitials(string? userName)
+    {
+        if (string.IsNullOrWhiteSpace(userName))
+        {
+            initials = "NA"; // Default initials if no username is available
+            return;
+        }
+        var nameBeforeAt = userName.Split('@')[0];
+        name = nameBeforeAt.Replace('.', ' ');
+        // Extract the initials from the username
+        initials = GenerateInitials(userName);
+    }
+    private string GenerateInitials(string name)
+    {
+        // Split the name by non-alphanumeric characters, like space or dots
+        var parts = name.Split(new[] { ' ', '.', '@' }, StringSplitOptions.RemoveEmptyEntries);
+
+        // Take the first character of the first two parts if available
+        return string.Concat(parts.Take(2).Select(part => part[0])).ToUpperInvariant();
     }
     private bool ShouldDisplayNavMenu()
     {

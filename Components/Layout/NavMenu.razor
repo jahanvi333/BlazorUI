@@ -5,38 +5,12 @@
 @inject NavigationManager NavigationManager
 
 <div class="navmenu" >
+    
     <input type="checkbox" title="Menu expand/collapse toggle" id="navmenu-toggle" class="navmenu-icon" />
     <label for="navmenu-toggle" class="navmenu-icon"><FluentIcon Value="@(new Icons.Regular.Size20.Navigation())" Color="Color.Fill" /></label>
- 
-    <nav class="sitenav" aria-labelledby="main-menu">
-        <FluentStack HorizontalAlignment="@HorizontalAlignment.End"
-                     VerticalAlignment="@VerticalAlignment.Center"
-                     Style="height: 48px; padding-inline-end: 0px; ">
-            <FluentProfileMenu Initials="@initials"
-                               Style="--fluent-profile-menu-hover: var(--neutral-stroke-focus); padding: 4px;">
-                <HeaderTemplate>
-                    <FluentLabel Typo="@Typography.Header" Color="@Color.Accent">Login</FluentLabel>
-                </HeaderTemplate>
-                <ChildContent>
-                    <div style="width: 250px; height: 80px">
-                        <FluentLabel Typo="@Typography.Header" Style="font-weight:bold">@name</FluentLabel>
-                        <FluentLabel Style="padding-top:7px">@userName</FluentLabel>
-                    </div>
-                </ChildContent>
-                <FooterTemplate>
-                    <FluentStack>
-                        @if (isUserAuthenticated)
-                        {
-                            <form action="Account/Logout" method="post">
-                                <AntiforgeryToken />
-                                <input type="hidden" name="ReturnUrl" value="@currentUrl" />
-                                <FluentButton Type="ButtonType.Submit" Style="width: 100%;">Logout</FluentButton>
-                            </form>
-                        }
-                    </FluentStack>
-                </FooterTemplate>
-            </FluentProfileMenu>
-        </FluentStack>
+    <FluentStack Style="display: flex; flex-direction: column; width: 100%;">
+    <nav class="sitenav" aria-labelledby="main-menu" style="display: flex; align-items: start;">
+     
         <FluentNavMenu Id="main-menu" Collapsible="true" Width="250" Title="Navigation menu" @bind-Expanded="expanded" CustomToggle="true">
             <FluentNavLink Href="home" Match="NavLinkMatch.All" Icon="@(new Icons.Regular.Size20.Home())" IconColor="Color.Accent">Home</FluentNavLink>
             <FluentNavLink Href="counter" Icon="@(new Icons.Regular.Size20.NumberSymbolSquare())" IconColor="Color.Accent">Counter</FluentNavLink>
@@ -57,8 +31,9 @@
                 </NotAuthorized>
             </AuthorizeView>
         </FluentNavMenu>
+
     </nav>
-   
+    </FluentStack>
 </div>
 
 @code {
@@ -72,38 +47,8 @@
     {
         currentUrl = NavigationManager.ToBaseRelativePath(NavigationManager.Uri);
         NavigationManager.LocationChanged += OnLocationChanged;
-        userName = await GetUserName();
-        isUserAuthenticated = userName != "Guest";
-        SetInitials(userName);
     }
-    private async Task<string> GetUserName()
-    {
-        var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
-        var user = authState.User;
-
-        // Return the name of the user if authenticated, otherwise "Guest"
-        return user.Identity?.Name ?? "Guest";
-    }
-    private void SetInitials(string? userName)
-    {
-        if (string.IsNullOrWhiteSpace(userName))
-        {
-            initials = "NA"; // Default initials if no username is available
-            return;
-        }
-        var nameBeforeAt = userName.Split('@')[0];
-        name = nameBeforeAt.Replace('.', ' ');
-        // Extract the initials from the username
-        initials = GenerateInitials(userName);
-    }
-    private string GenerateInitials(string name)
-    {
-        // Split the name by non-alphanumeric characters, like space or dots
-        var parts = name.Split(new[] { ' ', '.', '@' }, StringSplitOptions.RemoveEmptyEntries);
-
-        // Take the first character of the first two parts if available
-        return string.Concat(parts.Take(2).Select(part => part[0])).ToUpperInvariant();
-    }
+   
     private void OnLocationChanged(object? sender, LocationChangedEventArgs e)
     {
         currentUrl = NavigationManager.ToBaseRelativePath(e.Location);
